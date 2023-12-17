@@ -9,16 +9,16 @@ Welcome to the official repository for the paper "Cross-Covariate Gait Recogniti
 ## Dataset Visualization
 Here are some visualizations that depict the characteristics of the Cross-Covariate Gait Recognition (CCGR) dataset in comparison with other existing datasets, as well as the distribution of covariates, viewpoints, and data modalities within CCGR.
 
-### CCGR Dataset vs. Other Datasets
+## CCGR Dataset vs. Other Datasets
 ![CCGR_vs_Others](F1.jpg)
 
-### Covariates in the CCGR Dataset
+## Covariates in the CCGR Dataset
 ![Covariates](F2.jpg)
 
-### Views in the CCGR Dataset
+## Views in the CCGR Dataset
 ![Views](F3.jpg)
 
-### Data Modalities in the CCGR Dataset
+## Data Modalities in the CCGR Dataset
 ![Modalities](F5.jpg)
 
 ## Dataset Download Links

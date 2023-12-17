@@ -24,10 +24,17 @@ We are one of the earliest teams to explore parsing-based gait recognition, and 
 ![Modalities](F5.jpg)
 
 ## Dataset Download Links
-You can download the CCGR dataset from the following links. Please note that you might require access permissions or to adhere to specific usage agreements.
+If you are interested in using the derived data from the CCGR dataset, such as parsing, silhouettes, and poses, please ensure that you agree to and comply with the following conditions:
 
-- **Baidu Netdisk**: [Download Dataset (Baidu)](https://pan.baidu.com/s/XXXX)
-- **Google Drive**: [Download Dataset (Google)](https://drive.google.com/drive/folders/XXXX)
+1. The data may only be used for research purposes.
+2. If you share the dataset with other researchers, you must convey the first condition regarding its use explicitly.
+
+If you agree to the above terms, there is no need to send us any special download request! You can directly access the data via the links provided below:
+
+- Baidu Drive Link: [Link to the dataset on Baidu Drive]
+- Google Drive Link: [Link to the dataset on Google Drive]
+
+We encourage open and responsible use of the dataset for research, and we appreciate your cooperation and understanding.
 
 ## Pre-trained Models
 We provide partial weights of our models trained under the same conditions. Due to the nature of deep learning, performance can fluctuate by 1%-2% per run.

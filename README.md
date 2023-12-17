@@ -18,7 +18,8 @@ Here are some visualizations that depict the characteristics of the Cross-Covari
 ## Views in the CCGR Dataset
 ![Views](F3.jpg)
 
-## Data Modalities in the CCGR Dataset
+## Modalities in the CCGR Dataset
+We are one of the earliest teams to explore parsing-based gait recognition, and our work on parsing has been previously submitted to CVPR 2023.
 ![Modalities](F5.jpg)
 
 ## Dataset Download Links

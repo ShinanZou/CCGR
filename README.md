@@ -1,48 +1,50 @@
 # Cross-Covariate Gait Recognition: A Benchmark
 
-Welcome to the official repository of our paper "Cross-Covariate Gait Recognition: A Benchmark" which has been accepted at AAAI 2024. This repository serves as a central hub for accessing our dataset, viewing sample images, and testing gait recognition using the provided resources.
+Welcome to the official repository for the paper "Cross-Covariate Gait Recognition: A Benchmark," which has been accepted to AAAI 2024. In this work, we introduce a novel dataset and approach to gait recognition under various covariate conditions. Below you'll find details about the paper, dataset, and accompanying resources.
 
 ## Paper Links
-
-- [AAAI-2024 Version](#aaai-2024-paper-link)
-- [ArXiv Preprint Version](#arxiv-version-link)
+- **AAAI 2024 Version**: [Download paper (AAAI)](https://aaai.org/ojs/index.php/AAAI/article/view/XXXX)
+- **ArXiv Preprint**: [Download preprint (ArXiv)](https://arxiv.org/abs/XXXX.XXXXX)
 
 ## Dataset Visualization
+Here are some visualizations that depict the characteristics of the Cross-Covariate Gait Recognition (CCGR) dataset in comparison with other existing datasets, as well as the distribution of covariates, viewpoints, and data modalities within CCGR.
 
-Below are comparisons between the CCGR dataset and other existing gait recognition datasets, highlighting the distinctive features of our dataset.
+### CCGR Dataset vs. Other Datasets
+![CCGR_vs_Others](images/ccgr_vs_others.png)
 
-### CCGR vs Other Datasets
+### Covariates in the CCGR Dataset
+![Covariates](images/covariates.png)
 
-![Comparison Image](#link-to-comparison-image)
+### Viewpoint Distribution in the CCGR Dataset
+![Viewpoints](images/viewpoints.png)
 
-### Covariates in CCGR Dataset
-
-![Covariates Distribution](#link-to-covariates-distribution-image)
-
-### Views in CCGR Dataset
-
-![Views Distribution](#link-to-views-distribution-image)
+### Data Modalities in the CCGR Dataset
+![Modalities](images/modalities.png)
 
 ## Dataset Download Links
+You can download the CCGR dataset from the following links. Please note that you might require access permissions or to adhere to specific usage agreements.
 
-We have made our dataset available on both Baidu NetDisk and Google Drive for ease of access:
+- **Baidu Netdisk**: [Download Dataset (Baidu)](https://pan.baidu.com/s/XXXX)
+- **Google Drive**: [Download Dataset (Google)](https://drive.google.com/drive/folders/XXXX)
 
-- [Baidu NetDisk](#baidu-netdisk-download-link)
-- [Google Drive](#google-drive-download-link)
+## Pre-trained Models
+We provide partial weights of our models trained under the same conditions. Due to the nature of deep learning, performance can fluctuate by 1%-2% per run.
 
-## Testing Code
+- **Baidu Netdisk**: [Download Weights (Baidu)](https://pan.baidu.com/s/XXXX)
+- **Google Drive**: [Download Weights (Google)](https://drive.google.com/drive/folders/XXXX)
 
-For testing gait recognition algorithms on the CCGR dataset, we have updated the relevant testing code on the OpenGait platform. Researchers and developers interested in gait recognition can refer to the OpenGait platform resources for more information.
+## Testing Code on OpenGait Platform
+We have updated our testing code on the OpenGait platform to facilitate the evaluation of our dataset. You can find the latest code and instructions on how to use it by following this link:
 
-[OpenGait Platform](#opengait-platform-link)
+- [OpenGait Platform](http://opengait.example.com)
 
-## Citation
+## Cite Us
 If you find our dataset or paper useful for your research, please consider citing:
 
 ```bibtex
-@inproceedings{author2024cross,
+@inproceedings{author2024ccgr,
   title={Cross-Covariate Gait Recognition: A Benchmark},
-  author={Author, F. and Contributor, S. and Other, T.},
+  author={Author, F. and Another, A. and Colleague, C.},
   booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
   year={2024}
 }

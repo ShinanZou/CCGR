@@ -31,8 +31,8 @@ If you are interested in using the derived data from the CCGR dataset, such as p
 
 If you agree to the above terms, there is no need to send us any special download request! You can directly access the data via the links provided below:
 
-- Baidu Drive Link: [Link to the dataset on Baidu Drive]
-- Google Drive Link: [Link to the dataset on Google Drive]
+- **Baidu Netdisk**: [Download Dataset (Baidu)](https://pan.baidu.com/s/XXXX)
+- **Google Drive**: [Download Dataset (Google)](https://drive.google.com/drive/folders/XXXX)
 
 We encourage open and responsible use of the dataset for research, and we appreciate your cooperation and understanding.
 

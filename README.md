@@ -22,13 +22,21 @@ Here are some visualizations that depict the characteristics of the Cross-Covari
 ![Modalities](imgs/F5.jpg)
 
 ## Dataset Download Links
+If you are interested in using the derived data from the CCGR dataset, such as parsing, silhouettes, and poses, please ensure that you agree to and comply with the following conditions:
+
+1. The data may only be used for research purposes.
+2. If you share the dataset with other researchers, you must convey the first condition regarding its use explicitly.
+
+If you agree to the above terms, there is no need to send us any special download request! You can directly access the data via the links provided below:
 You can download the CCGR dataset from the following links. Please note that you might require access permissions or to adhere to specific usage agreements.
 
 - **Baidu Netdisk**: [Download Dataset (Baidu)](https://pan.baidu.com/s/XXXX)
 - **Google Drive**: [Download Dataset (Google)](https://drive.google.com/drive/folders/XXXX)
 
+We encourage open and responsible use of the dataset for research, and we appreciate your cooperation and understanding.
+
 ## Testing Code on OpenGait Platform
-Specific adjustments are necessary to utilize the OpenGait framework for the CCGR dataset effectively. For detailed instructions on how to adapt OpenGait, please refer to the guidelines provided at the beginning of the `CCGR_EVA.py` file. These modifications are designed to ensure seamless integration of the CCGR dataset with the existing capabilities of OpenGait. Additionally, we have included the CCGR yaml file within this document and some trained weights (https://pan.baidu.com/s/XXXX).
+Specific adjustments are necessary to utilize the OpenGait framework for the CCGR dataset effectively. For detailed instructions on how to adapt OpenGait, please refer to the guidelines provided at the beginning of the `CCGR_EVA.py` file. These modifications are designed to ensure seamless integration of the CCGR dataset with the existing capabilities of OpenGait. Additionally, we have included the CCGR yaml file within this document and [some trained weights] (https://pan.baidu.com/s/XXXX).
 
 - [OpenGait Platform](https://github.com/ShiqiYu/OpenGait)
 

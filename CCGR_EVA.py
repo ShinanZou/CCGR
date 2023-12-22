@@ -72,8 +72,7 @@ To:
             else:
                 return eval_func(info_dict, dataset_name, **valid_args)
 ```
-These changes are meant to adapt OpenGait for evaluation of the CCGR dataset by modifying how modalities are selected and how evaluation results are stored.
-
+These changes are meant to adapt OpenGait for CCGR by modifying how modalities are selected, and evaluation results are stored.
 
 ########################################################################################################################
 The steps to complete training and testing using CCGR are as follows (GaitSet example):
@@ -88,15 +87,22 @@ The CCGR dataset is quite large, and completing all tests, including easy and ha
 To increase efficiency, you can consider the following:
 
 1. Priority on Easy Metrics Analysis:
-   - Set the "easy" parameter to true. 
+   - Set the "easy" parameter to true. (python CCGR_EVA.py --easy)
    According to our experience, if the performance of algorithms is close, 
    the easy metrics do not fully reflect the performance difference under hard metrics. 
    However, this is useful for acceleration studies.
 
-2. Implementation of Feature Dimension Pooling (FDPool):
-   - Engage the feature dimension pooling by setting an "fdp" parameter to true. 
+2. Implementation of Feature Dimension Pooling (https://github.com/ShinanZou/MSAFF):
+   - Engage the feature dimension pooling by setting an "fdp" parameter to true. (python CCGR_EVA.py --fdp)
    While there is a potential for a minor dip in the performance of some models, this technique significantly reduces computation time.
-
+   If feature dimension pooling is helpful for your research, please cite the following paper:
+   ```
+     @INPROCEEDINGS{ShinanZouMSAFF
+    author={Zou, Shinan and Xiong, Jianbo and Fan, Chao and Yu, Shiqi and Tang, Jin},
+    booktitle={2023 IEEE International Joint Conference on Biometrics (IJCB)}, 
+    title={A Multi-Stage Adaptive Feature Fusion Neural Network for Multimodal Gait Recognition}, 
+    year={2023}}
+    ```
 I recommend that you utilize these strategies to optimize the speed of your daily experiments. 
 However, for final reports or when in-depth analysis is necessary, a full examination, including both easy and hard metrics, is essential. 
 Please note that the results we have included in the published paper are based on complete tests, not utilizing these expedited methods.

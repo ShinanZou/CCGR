@@ -22,8 +22,8 @@ Here are some visualizations that depict the characteristics of the Cross-Covari
 ![Modalities](imgs/F5.jpg)
 
 ## CCGR Dataset Download Guide
-### Derived data
-We are pleased to offer the derived data from the CCGR dataset for use in your research projects. To ensure proper usage, we kindly ask that you adhere to the following terms:
+### Derived data (Silhouette, Parsing, Pose)
+We are pleased to offer the derived data for use in your research projects. To ensure proper usage, we kindly ask that you adhere to the following terms:
 
 1. **Research Purposes Only**: The dataset is strictly for academic and non-commercial research purposes only.
 2. **No Modification or Redistribution**: Modifying the dataset or redistributing it in any form is not permitted.
@@ -33,16 +33,16 @@ By downloading the dataset, you indicate your acceptance of these terms. We have
 
 #### Dataset Links
 
-You are invited to download the CCGR dataset from the links below. Please be mindful to check if access permissions or specific usage agreements are required.
+You are invited to download the CCGR dataset from the links below. Before proceeding with the download, please ensure you have agreed to the above terms.
 
 - **Baidu Netdisk**: [Download Dataset (Baidu)](https://pan.baidu.com/s/XXXX)
 - **Google Drive**: [Download Dataset (Google)](https://drive.google.com/drive/folders/XXXX)
 
-We wish to support a collaborative and respectful research community and we believe that adherence to these guidelines will be mutually beneficial.
+We wish to support a collaborative and respectful research community and we believe that adherence to these terms will be mutually beneficial.
 
-### Raw data
+### Raw data (RGB)
 
-We would like to inform you that the original CCGR dataset is scheduled to be released on March 1, 2024. Details regarding access and download instructions will be announced as the date approaches. Please stay tuned to our official communication channels for further updates.
+We would like to inform you that the Raw data is scheduled to be released on March 1, 2024. Details regarding access and download instructions will be announced as the date approaches. Please stay tuned to our official communication channels for further updates.
 
 Thank you for your attention and cooperation. We sincerely hope the dataset aids you in your research endeavors.
 

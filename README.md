@@ -47,7 +47,7 @@ We would like to inform you that the Raw data is scheduled to be released on Mar
 Thank you for your attention and cooperation. We sincerely hope the dataset aids you in your research endeavors.
 
 ## Testing Code on OpenGait Platform
-Specific adjustments are necessary to utilize the OpenGait framework for the CCGR dataset effectively. For detailed instructions on how to adapt OpenGait, please refer to the guidelines provided at the beginning of the `CCGR_EVA.py` file. These modifications are designed to ensure seamless integration of the CCGR dataset with the existing capabilities of OpenGait. Additionally, we have included some yaml files within this document and [some trained weights for silhouette](https://drive.google.com/drive/folders/XXXX).
+Specific adjustments are necessary to utilize the OpenGait framework testing the CCGR dataset effectively. For detailed instructions on how to adapt OpenGait, please refer to the guidelines provided at the beginning of the `CCGR_EVA.py` file. These modifications are designed to ensure seamless integration of the CCGR dataset with the existing capabilities of OpenGait. Additionally, we have included some yaml files within this document and [some trained weights for silhouette](https://drive.google.com/drive/folders/XXXX).
 - [OpenGait Platform](https://github.com/ShiqiYu/OpenGait)
 
 ## Cite Us

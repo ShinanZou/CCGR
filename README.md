@@ -1,6 +1,6 @@
 # Cross-Covariate Gait Recognition: A Benchmark
 
-Welcome to the official repository for the paper "Cross-Covariate Gait Recognition: A Benchmark," which has been accepted to AAAI 2024. In this work, we introduce a novel dataset and approach to gait recognition under various covariate conditions. Below you'll find details about the paper, dataset, and accompanying resources.
+Welcome to the official repository for the paper "Cross-Covariate Gait Recognition: A Benchmark," which has been accepted to AAAI 2024. In this work, we introduce a novel dataset and parsing-based gait recognition approach under Cross-covariate conditions. Below you'll find details about the paper, dataset, and accompanying resources.
 
 ## Paper Links
 - **AAAI 2024 Version**: [Download paper (AAAI)](https://aaai.org/ojs/index.php/AAAI/article/view/XXXX)

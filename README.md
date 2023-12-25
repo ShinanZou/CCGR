@@ -47,6 +47,9 @@ We would like to inform you that the Raw data is scheduled to be released on Mar
 
 Thank you for your attention and cooperation. We sincerely hope the dataset aids you in your research endeavors.
 
+## Ethical Statement
+All subjects are openly recruited and participate voluntarily, and they need to read and acknowledge the collection protocol by signature and fingerprint. In return, we pay each subject a fee for data copyright.
+
 ## Testing Code on OpenGait Platform
 Specific adjustments are necessary to utilize the OpenGait framework testing the CCGR dataset effectively. For detailed instructions on how to adapt OpenGait, please refer to the guidelines provided at the beginning of the `CCGR_EVA.py` file. These modifications are designed to ensure seamless integration of the CCGR dataset with the existing capabilities of OpenGait. Additionally, we have included some yaml files within this document and some trained weights for silhouette. [Baidu Netdisk](https://pan.baidu.com/s/1BePp802Aimo5kNTzoO8-HQ)  (Code:4o92); [OneDrive](https://1drv.ms/f/c/8464f220191191b1/EghAuK8us5ROigkMkifohzMBG81qQQBBrVcLiGoPnCL_Tw?e=kBgiXG).
 - [OpenGait Platform](https://github.com/ShiqiYu/OpenGait)

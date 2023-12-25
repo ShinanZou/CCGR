@@ -4,7 +4,7 @@ Welcome to the official repository for the paper "Cross-Covariate Gait Recogniti
 
 ## Paper Links
 - **AAAI 2024 Version**: [Download paper (AAAI)](https://aaai.org/ojs/index.php/AAAI/article/view/XXXX)
-- **ArXiv Preprint**: [Download preprint (ArXiv)](https://arxiv.org/abs/XXXX.XXXXX)
+- **ArXiv Preprint**: [Download preprint (ArXiv)](https://arxiv.org/pdf/2312.14404.pdf)
 
 ## Dataset Visualization
 Here are some visualizations that depict the characteristics of the Cross-Covariate Gait Recognition (CCGR) dataset in comparison with other existing datasets, as well as the distribution of covariates, viewpoints, and data modalities within CCGR.

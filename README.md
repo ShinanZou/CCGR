@@ -43,7 +43,7 @@ We wish to support a collaborative and respectful research community and we beli
 
 ### Raw data (RGB)
 
-We would like to inform you that the Raw data is scheduled to be released on March 1, 2024. Details regarding access and download instructions will be announced as the date approaches. Please stay tuned to our official communication channels for further updates.
+We would like to inform you that the Raw data is scheduled to be released on March 1, 2024, because we need more time to upload the data (the raw data is bigger). Details regarding access and download instructions will be announced as the date approaches. Please stay tuned to our official communication channels for further updates.
 
 Thank you for your attention and cooperation. We sincerely hope the dataset aids you in your research endeavors.
 

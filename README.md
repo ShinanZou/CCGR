@@ -36,8 +36,8 @@ By downloading the dataset, you indicate your acceptance of these terms. We have
 
 You are invited to download the CCGR dataset from the links below. Before proceeding with the download, please ensure you have agreed to the above terms.
 
-- **Baidu Netdisk**: [Download Dataset (Baidu)](https://pan.baidu.com/s/XXXX)
-- **Google Drive**: [Download Dataset (Google)](https://drive.google.com/drive/folders/XXXX)
+- **Baidu Netdisk**: [Download Dataset (Code:ngcw)](https://pan.baidu.com/s/1GUTdGRLHyqSHw0Fcc7iUEQ)
+- **OneDrive**: [Download Dataset](https://1drv.ms/f/c/8464f220191191b1/Eov74XWuOi1Op_fdXDRzoAMBbJLrqSN1HoM4_WLNLUNm0Q?e=A8RQAJ)
 
 We wish to support a collaborative and respectful research community and we believe that adherence to these terms will be mutually beneficial.
 
@@ -48,7 +48,7 @@ We would like to inform you that the Raw data is scheduled to be released on Mar
 Thank you for your attention and cooperation. We sincerely hope the dataset aids you in your research endeavors.
 
 ## Testing Code on OpenGait Platform
-Specific adjustments are necessary to utilize the OpenGait framework testing the CCGR dataset effectively. For detailed instructions on how to adapt OpenGait, please refer to the guidelines provided at the beginning of the `CCGR_EVA.py` file. These modifications are designed to ensure seamless integration of the CCGR dataset with the existing capabilities of OpenGait. Additionally, we have included some yaml files within this document and [some trained weights for silhouette](https://drive.google.com/drive/folders/XXXX).
+Specific adjustments are necessary to utilize the OpenGait framework testing the CCGR dataset effectively. For detailed instructions on how to adapt OpenGait, please refer to the guidelines provided at the beginning of the `CCGR_EVA.py` file. These modifications are designed to ensure seamless integration of the CCGR dataset with the existing capabilities of OpenGait. Additionally, we have included some yaml files within this document and some trained weights for silhouette. ([Baidu Netdisk (Code:4o92)](https://pan.baidu.com/s/1BePp802Aimo5kNTzoO8-HQ); [OneDrive](https://1drv.ms/f/c/8464f220191191b1/EghAuK8us5ROigkMkifohzMBG81qQQBBrVcLiGoPnCL_Tw?e=kBgiXG).
 - [OpenGait Platform](https://github.com/ShiqiYu/OpenGait)
 
 ## Cite Us

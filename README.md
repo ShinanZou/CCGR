@@ -27,7 +27,7 @@ Here are some visualizations that depict the characteristics of the Cross-Covari
 We are pleased to offer the derived data for use in your research projects. To ensure proper usage, we kindly ask that you adhere to the following terms:
 
 1. **Research Purposes Only**: The dataset is strictly for academic and non-commercial research purposes only.
-2. **No Modification or Redistribution**: Modifying the dataset or redistributing it in any form is not permitted.
+2. **No Modification or Redistribution**: Modifying the dataset or redistributing it in **any form** is not permitted.
 3. **Internal Use**: The dataset is to be used within your organization or research group and is not to be shared outside of this group.
 
 By downloading the dataset, you indicate your acceptance of these terms. We have facilitated easy access to the data via the links provided below, so no additional download request is necessary!

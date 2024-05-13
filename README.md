@@ -42,6 +42,7 @@ You are invited to download the CCGR dataset from the links below. Before procee
 We wish to support a collaborative and respectful research community and we believe that adherence to these terms will be mutually beneficial.
 
 ### Raw data (RGB)
+I have been too busy lately, and the data is large. If you want to use RGB data immediately, please send me an email to contact me.
 
 We would like to inform you that the Raw data is scheduled to be released on March 1, 2024, because we need more time to upload the data (the raw data is bigger). Details regarding access and download instructions will be announced as the date approaches. Please stay tuned to our official communication channels for further updates.
 

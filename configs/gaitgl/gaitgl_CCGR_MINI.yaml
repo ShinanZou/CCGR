@@ -1,0 +1,70 @@
+data_cfg:
+  dataset_name: CCGR-MINI
+  dataset_root: /7T/zsndata3/CCGR-MINI
+  dataset_partition: ./datasets/CCGR-MINI/CCGR-MINI.json
+  num_workers: 1
+  data_in_use: sil
+  remove_no_gallery: false # Remove probe if no gallery for it
+  test_dataset_name: CCGR-MINI
+
+evaluator_cfg:
+  enable_float16: false
+  restore_ckpt_strict: true
+  restore_hint: 80000
+  save_name: GaitGL_SIL
+  eval_func: evaluate_CCGR_MINI
+  sampler:
+    batch_size: 1
+    sample_type: all_ordered
+    type: InferenceSampler
+
+loss_cfg:
+  - loss_term_weight: 1.0
+    margin: 0.2
+    type: TripletLoss
+    log_prefix: triplet
+  - loss_term_weight: 1.0
+    scale: 1
+    type: CrossEntropyLoss
+    log_accuracy: true
+    label_smooth: true
+    log_prefix: softmax
+
+model_cfg:
+  model: GaitGL
+  channels: [32, 64, 128, 256]
+  class_num: 571
+
+optimizer_cfg:
+  lr: 0.1
+  momentum: 0.9
+  solver: SGD
+  weight_decay: 0.0005
+
+scheduler_cfg:
+  gamma: 0.1
+  milestones: # Learning Rate Reduction at each milestones
+    - 30000
+    - 55000
+    - 65000
+  scheduler: MultiStepLR
+
+trainer_cfg:
+  enable_float16: true
+  with_test: false
+  log_iter: 100
+  restore_ckpt_strict: true
+  restore_hint: 0
+  save_iter: 20000
+  save_name: GaitGL_SIL
+  sync_BN: true
+  total_iter: 80000
+  sampler:
+    batch_shuffle: true
+    batch_size:
+      - 8
+      - 16
+    frames_num_fixed: 30
+    frames_skip_num: 0
+    sample_type: fixed_ordered
+    type: TripletSampler

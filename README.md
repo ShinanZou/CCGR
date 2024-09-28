@@ -1,52 +1,52 @@
-# Cross-Covariate Gait Recognition: A Benchmark
+#交叉协变量步态识别:一个基准
 
-Welcome to the official repository for the paper "Cross-Covariate Gait Recognition: A Benchmark," which has been accepted to AAAI 2024.
+欢迎访问“交叉协变量步态识别:基准”论文的官方知识库，该论文已被AAAI 2024接受。
 
-## Paper Links
-- **AAAI 2024 Version**: [Download paper (AAAI)](https://ojs.aaai.org/index.php/AAAI/article/view/28621)
-- **ArXiv Preprint**: [Download preprint (ArXiv)](https://arxiv.org/pdf/2312.14404.pdf)
+##纸质链接
+- **AAAI 2024版**: [下载论文(AAAI)](https://ojs.aaai.org/index.php/AAAI/article/view/28621)
+- **ArXiv预印本**: [下载预印本(ArXiv)](https://arxiv.org/pdf/2312.14404.pdf)
 
-## Dataset Download Guide
-### CCGR Dataset
-#### Derived data (Silhouette, Parsing, Pose)
-We are pleased to offer the derived data for use in your research projects. You can download the data directly 
-when you agree to comply with this Licence: CC BY-NC-ND (Creative Commons Attribution-NonCommercial-NoDerivatives).
-- **Baidu Netdisk**: [Download Dataset](https://pan.baidu.com/s/1GUTdGRLHyqSHw0Fcc7iUEQ) (Code:ngcw)
-- **OneDrive**: [Download Dataset](https://1drv.ms/f/c/8464f220191191b1/Eov74XWuOi1Op_fdXDRzoAMBbJLrqSN1HoM4_WLNLUNm0Q?e=A8RQAJ)
+##数据集下载指南
+###CCGR数据集
+####衍生数据(轮廓、解析、姿势)
+我们很高兴为您的研究项目提供衍生数据。你可以直接下载数据
+当您同意遵守本许可证时:CC BY-NC-ND(知识共享署名-非商业性使用-不可转让)。
+- **百度网盘**: [下载数据集](https://pan.baidu.com/s/1GUTdGRLHyqSHw0Fcc7iUEQ)(代码:ngcw)
+- **OneDrive**: [下载数据集](https://1drv.ms/f/c/8464f220191191b1/Eov74XWuOi1Op_fdXDRzoAMBbJLrqSN1HoM4_WLNLUNm0Q?e=A8RQAJ)
 
 #### Raw data (RGB)
-Please sign this agreement and send it to the email address (zoushinan@csu.edu.cn). 
-We will process your request email as soon as possible. 
-There are currently optional ways for applicants from mainland China to access the data; 
-please let us know your choice in the email when you write.
+请在本[协议](https://github.com/ShinanZou/CCGR/blob/CCGR-Benchmark/output/CCGR_Dataset_RGB_Data_Usage_Agreement.pdf)上签名，并发至邮箱(zoushinan@csu.edu.cn)。
+我们将尽快处理您的请求电子邮件。
+目前，中国大陆的申请人可以通过多种方式获取数据；
+请让我们知道你写邮件时的选择。
 1. Baidu Netdisk Link
 2. OneDrive Link
 3. Mailing Services. You can mail us a hard drive; we will copy the data to the hard drive and return it to you. 
-(The hard drive needs to be larger than 2T, USB3.0 interface. Supported only in Mainland China)
+(硬盘需要大于2T，USB3.0接口。仅在Mainland China支持)
 
-Note: We're very sorry. Due to government network regulations in China (Internet Transmission Restrictions), 
-we need more time to upload the RGB data to OneDrive, which means the OneDrive option is currently unavailable. 
-(Because the CCGR raw data is too big)
+注意:我们非常抱歉。由于中国政府网络法规(互联网传输限制)，
+我们需要更多时间将RGB数据上传到OneDrive，这意味着OneDrive选项当前不可用。
+(因为CCGR原始数据太大)
 
 ### CCGR-Mini Dataset
-CCGR-Mini is a subset of CCGR. The CCGR-Mini is smaller in size and can speed up your research.
+CCGR迷你是CCGR的子集。迷你CCGR的体积更小，可以加快你的研究。
 
-We construct CCGR-Mini by extracting data from CCGR as follows. 
-The 53 covariates for each human are retained, but of the 33 views under each covariate, 
-one is randomly selected as data for the CCGR-Mini, and the remaining views are discarded. 
-This way, each person still retains 53 covariates and enough views to maintain the original challenge. 
-Moreover, with only 53 videos per person, data is significantly reduced. 
+我们通过从CCGR提取如下数据来构建CCGR迷你模型。
+每个人的53个协变量被保留，但是在每个协变量下的33个视图中，
+随机选择一个作为CCGR迷你的数据，其余的视图被丢弃。
+这样，每个人仍然保留53个协变量和足够的视图来维持原始挑战。
+此外，每人只有53个视频，数据明显减少。
 
-CCGR-MINI has 970 subjects, 47,884 sequences, 53 different covariates, and 33 different views.
+CCGR迷你有970名受试者，47，884个序列，53个不同的协变量和33个不同的视图。
 
-We are pleased to offer the data for use in your research projects. You can download the data directly 
-when you agree to comply with this Licence: CC BY-NC-ND (Creative Commons Attribution-NonCommercial-NoDerivatives).
-#### Derived data (Silhouette, Parsing, Pose)
-- **Baidu Netdisk**: [Download Dataset](https://pan.baidu.com/s/1h6auGcxWFqeUAws0PvSH8g) (Code:ei8e)
-- **OneDrive**: [Download Dataset](https://1drv.ms/f/c/8464f220191191b1/Ev18lg3FHJZCoyF_6z91JUUBDgBX7EZN0WHJKJnDEIzbWA?e=xon8em)
+我们很高兴为你的研究项目提供数据。你可以直接下载数据
+当您同意遵守本许可证时:CC BY-NC-ND(知识共享署名-非商业性使用-不可转让)。
+####衍生数据(轮廓、解析、姿势)
+- **百度网盘**: [下载数据集](https://pan.baidu.com/s/1h6auGcxWFqeUAws0PvSH8g) (Code:ei8e)
+- **OneDrive**: [下载数据集](https://1drv.ms/f/c/8464f220191191b1/Ev18lg3FHJZCoyF_6z91JUUBDgBX7EZN0WHJKJnDEIzbWA?e=xon8em)
 #### Raw data (RGB)
-- **Baidu Netdisk**: [Download Dataset](https://pan.baidu.com/s/1qHJxbbMamgEPwp8fd2sfkQ) (Code:oyqf)
-- **OneDrive**: [Download Dataset]()
+- **百度网盘**: [下载数据集](https://pan.baidu.com/s/1qHJxbbMamgEPwp8fd2sfkQ) (Code:oyqf)
+- **OneDrive**: [下载数据集]()
 
 ### Preview: Two new collected datasets CCGR-? and CCGR-? are coming.
 ## Code

@@ -75,7 +75,7 @@ class GaitGL(BaseModel):
         class_num = model_cfg['class_num']
         dataset_name = self.cfgs['data_cfg']['dataset_name']
 
-        if dataset_name in ['OUMVLP', 'GREW', 'CCGR']:
+        if dataset_name in ['OUMVLP', 'GREW', 'CCGR', 'CCGR-MINI']:
             # For OUMVLP and GREW
             self.conv3d = nn.Sequential(
                 BasicConv3d(1, in_c[0], kernel_size=(3, 3, 3),

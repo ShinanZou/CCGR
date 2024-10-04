@@ -19,7 +19,6 @@ evaluator_cfg:
     batch_size: 4
     sample_type: all_ordered
     type: InferenceSampler
-    view_label: false
   transform:
       - type: BaseSilCuttingTransform
   metric: euc # cos

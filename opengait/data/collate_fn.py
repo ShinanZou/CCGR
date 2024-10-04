@@ -11,7 +11,6 @@ class CollateFn(object):
         sample_type = sample_type.split('_')
         self.sampler = sample_type[0]
         self.ordered = sample_type[1]
-        self.view_label_flag = sample_config['view_label']
         if self.sampler not in ['fixed', 'unfixed', 'all']:
             raise ValueError
         if self.ordered not in ['ordered', 'unordered']:

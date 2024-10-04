@@ -311,11 +311,8 @@ class BaseModel(MetaModel, nn.Module):
                 for trf, seq in zip(seq_trfs, seqs_batch)]
 
         typs = typs_batch
-        if self.engine_cfg['sampler']['view_label']:
-            vies = list2var(vies_batch).long()
-        else:
-            vies = vies_batch
-
+        vies = vies_batch
+        
         labs = list2var(labs_batch).long()
 
         if seqL_batch is not None:

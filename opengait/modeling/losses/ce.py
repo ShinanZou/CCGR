@@ -31,17 +31,3 @@ class CrossEntropyLoss(BaseLoss):
         return loss, self.info
 
 
-class view_CrossEntropyLoss(BaseLoss):
-    def __init__(self, loss_term_weight=1.0):
-        super(view_CrossEntropyLoss, self).__init__(loss_term_weight)
-        # self.loss = nn.CrossEntropyLoss()
-
-    def forward(self, logits_view, labels):
-        """
-            logits: [n, c]
-            labels: [n]
-        """
-        loss = F.cross_entropy(logits_view, labels)
-        self.info.update({'loss': loss.detach().clone()})
-
-        return loss, self.info

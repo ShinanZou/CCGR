@@ -48,7 +48,7 @@ when you agree to comply with this Licence: CC BY-NC-ND (Creative Commons Attrib
 - **Baidu Netdisk**: [Download Dataset](https://pan.baidu.com/s/1qHJxbbMamgEPwp8fd2sfkQ) (Code:oyqf)
 - **OneDrive**: [Download Dataset](https://1drv.ms/f/c/8464f220191191b1/EjH2ZXqcl0tNnETfxOh2wZYBpgVsqx-6cZ7x8CVEADIjLA?e=YpbMVI)
 
-### Preview: Two new collected datasets CCGR-? and CCGR-? are coming.
+
 ## Code
 We have uploaded the code, which is modified from OpenGait.
 The main changes are listed below:

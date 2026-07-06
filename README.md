@@ -46,7 +46,7 @@ CCGR contains **970 subjects**, about **1.6 million sequences**, **33 views**, a
 | Data type | Access |
 |---|---|
 | Derived data: silhouette, parsing, pose | [Baidu Netdisk](https://pan.baidu.com/s/1GUTdGRLHyqSHw0Fcc7iUEQ) `ngcw` / [OneDrive](https://1drv.ms/f/c/8464f220191191b1/Eov74XWuOi1Op_fdXDRzoAMBbJLrqSN1HoM4_WLNLUNm0Q?e=A8RQAJ) |
-| Raw RGB data | Please sign the [RGB data usage agreement](https://github.com/ShinanZou/CCGR/blob/CCGR-Benchmark/output/CCGR_Dataset_RGB_Data_Usage_Agreement.pdf) and send it to [zoushinan@csu.edu.cn](mailto:zoushinan@csu.edu.cn). |
+| Raw RGB data | Please sign the [RGB data usage agreement](https://github.com/ShinanZou/CCGR/blob/CCGR-Benchmark/output/CCGR_Dataset_RGB_Data_Usage_Agreement.pdf) and send it to [zoushinan@csu.edu.cn](mailto:chengyulong@csu.edu.cn). |
 
 ### CCGR-Mini
 

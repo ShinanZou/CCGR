@@ -2,7 +2,7 @@
 
 # CCGR: Cross-Covariate Gait Recognition
 
-**Official project page for the CCGR benchmark and 3D Gallery.**
+**Official project page for the CCGR benchmark and CCGR-3D.**
 
 [![AAAI 2024](https://img.shields.io/badge/AAAI-2024-2f6fbb)](https://ojs.aaai.org/index.php/AAAI/article/view/28621)
 [![Knowledge-Based Systems 2026](https://img.shields.io/badge/KBS-2026-8a2be2)](https://doi.org/10.1016/j.knosys.2026.115576)
@@ -15,13 +15,13 @@
 
 Cross-covariate gait recognition aims to identify people under large appearance and acquisition changes, including clothing, carrying conditions, body-shape variations, viewpoints, and other practical covariates.
 
-This project brings together the **CCGR benchmark**, **CCGR-Mini**, and the follow-up **3D Gallery** setting for cross-covariate gait recognition.
+This project brings together the **CCGR benchmark**, **CCGR-Mini**, and **CCGR-3D** for cross-covariate gait recognition.
 
 | Component | Description |
 |---|---|
 | **CCGR** | A large-scale cross-covariate gait benchmark with dense view and covariate annotations. |
 | **CCGR-Mini** | A compact subset of CCGR for faster research iteration while preserving covariate diversity. |
-| **CCGR-3D / 3D Gallery** | A 3D-gallery-based extension for studying robust cross-covariate gait recognition. |
+| **CCGR-3D** | An extension of CCGR for studying robust cross-covariate gait recognition with 3D data. |
 
 ## News
 
@@ -46,7 +46,7 @@ CCGR contains **970 subjects**, about **1.6 million sequences**, **33 views**, a
 | Data type | Access |
 |---|---|
 | Derived data: silhouette, parsing, pose | [Baidu Netdisk](https://pan.baidu.com/s/1GUTdGRLHyqSHw0Fcc7iUEQ) `ngcw` / [OneDrive](https://1drv.ms/f/c/8464f220191191b1/Eov74XWuOi1Op_fdXDRzoAMBbJLrqSN1HoM4_WLNLUNm0Q?e=A8RQAJ) |
-| Raw RGB data | Please sign the [RGB data usage agreement](https://github.com/ShinanZou/CCGR/blob/CCGR-Benchmark/output/CCGR_Dataset_RGB_Data_Usage_Agreement.pdf) and send it to [zoushinan@csu.edu.cn](mailto:chengyulong@csu.edu.cn). |
+| Raw RGB data | Please sign the [RGB data usage agreement](https://github.com/ShinanZou/CCGR/blob/CCGR-Benchmark/output/CCGR_Dataset_RGB_Data_Usage_Agreement.pdf) and send it to [zoushinan@csu.edu.cn](mailto:zoushinan@csu.edu.cn). |
 
 ### CCGR-Mini
 
@@ -57,9 +57,14 @@ CCGR-Mini is a lightweight subset of CCGR. It keeps **970 subjects**, **47,884 s
 | Derived data: silhouette, parsing, pose | [Baidu Netdisk](https://pan.baidu.com/s/1h6auGcxWFqeUAws0PvSH8g) `ei8e` / [OneDrive](https://1drv.ms/f/c/8464f220191191b1/Ev18lg3FHJZCoyF_6z91JUUBDgBX7EZN0WHJKJnDEIzbWA?e=xon8em) |
 | Raw RGB data | [Baidu Netdisk](https://pan.baidu.com/s/1qHJxbbMamgEPwp8fd2sfkQ) `oyqf` / [OneDrive](https://1drv.ms/f/c/8464f220191191b1/EjH2ZXqcl0tNnETfxOh2wZYBpgVsqx-6cZ7x8CVEADIjLA?e=YpbMVI) |
 
-### CCGR-3D / 3D Gallery
+### CCGR-3D
 
-CCGR-3D is the 3D-gallery-based extension associated with **3D Gallery for Cross-Covariate Gait Recognition**. It is designed for evaluating cross-covariate gait recognition under a 3D gallery setting. When using CCGR-3D, please cite both the 3D Gallery paper and the original CCGR benchmark paper.
+CCGR-3D extends CCGR for evaluating cross-covariate gait recognition with 3D data. It provides multiple processed modalities, including **silhouette**, **pose**, **parsing**, **SMPL**, and **skeleton**. When using CCGR-3D, please cite both the 2026 KBS paper and the original CCGR benchmark paper.
+
+| Data type | Access |
+|---|---|
+| Processed data: silhouette, pose, parsing, SMPL, skeleton | [Baidu Netdisk](https://pan.baidu.com/s/1nFYf6lXI_GvZ5tT7BScIhw?pwd=dci3) `dci3` |
+| Raw RGB data | [Baidu Netdisk](https://pan.baidu.com/s/1NcOaS2Znz3WAYmwzrxp7zw?pwd=bd3d) `bd3d`<br>Please sign the [RGB data usage agreement](https://github.com/ShinanZou/CCGR/blob/CCGR-Benchmark/output/CCGR_Dataset_RGB_Data_Usage_Agreement.pdf) and send it to [zoushinan@csu.edu.cn](mailto:chengyulong@csu.edu.cn). |
 
 ## Benchmark Results
 

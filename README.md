@@ -64,7 +64,7 @@ CCGR-3D extends CCGR for evaluating cross-covariate gait recognition with 3D dat
 | Data type | Access |
 |---|---|
 | Processed data: silhouette, pose, parsing, SMPL, skeleton, point cloud | [Baidu Netdisk](https://pan.baidu.com/s/1nFYf6lXI_GvZ5tT7BScIhw?pwd=dci3) `dci3` |
-| Raw RGB data | [Baidu Netdisk](https://pan.baidu.com/s/1NcOaS2Znz3WAYmwzrxp7zw?pwd=bd3d) `bd3d`<br>Please sign the [RGB data usage agreement](https://github.com/ShinanZou/CCGR/blob/CCGR-Benchmark/output/CCGR_Dataset_RGB_Data_Usage_Agreement.pdf) and send it to [chengyulong@csu.edu.cn](mailto:chengyulong@csu.edu.cn). |
+| Raw RGB data | Please sign the [RGB data usage agreement](https://github.com/ShinanZou/CCGR/blob/CCGR-Benchmark/output/CCGR_Dataset_RGB_Data_Usage_Agreement.pdf) and send it to [chengyulong@csu.edu.cn](mailto:chengyulong@csu.edu.cn). |
 
 ## Benchmark Results
 

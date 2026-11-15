@@ -196,6 +196,11 @@ def de_diag_CCGR(acc, K, p, each_angle=False):
         result = np.mean(result)
     return result
 
+# def de_diag_CCGR(acc, K, p, each_angle=False):
+#     result = np.diag(acc)
+#     if not each_angle:
+#         result = np.mean(result)
+#     return result
 
 def ac_CCGR(dataset, feature, view, seq_type, label, view_list, v1, probe_view, num_rank, acc, cu, ac_list):
     for (p, probe_seq) in enumerate(probe_seq_dict[dataset]):

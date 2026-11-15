@@ -10,8 +10,8 @@ import yaml
 import random
 from torch.nn.parallel import DistributedDataParallel as DDP
 from collections import OrderedDict, namedtuple
-
-
+from thop import profile
+from ptflops import get_model_complexity_info
 class NoOp:
     def __getattr__(self, *args):
         def no_op(*args, **kwargs): pass
@@ -138,8 +138,8 @@ def clones(module, N):
 def config_loader(path):
     with open(path, 'r') as stream:
         src_cfgs = yaml.safe_load(stream)
+    # with open("/12T/zsn5/CCGR-Benchmark/configs/default.yaml", 'r') as stream:
     with open("./configs/default.yaml", 'r') as stream:
-    # with open("/12T/zsn5/OpenGait-master1/configs/default.yaml", 'r') as stream:
         dst_cfgs = yaml.safe_load(stream)
     MergeCfgsDict(src_cfgs, dst_cfgs)
     return dst_cfgs
@@ -191,16 +191,77 @@ class DDPPassthrough(DDP):
             return getattr(self.module, name)
 
 
-def get_ddp_module(module, **kwargs):
+def get_ddp_module(module, find_unused_parameters=False, **kwargs):
     if len(list(module.parameters())) == 0:
         # for the case that loss module has not parameters.
         return module
     device = torch.cuda.current_device()
     module = DDPPassthrough(module, device_ids=[device], output_device=device,
-                            find_unused_parameters=False, **kwargs)
+                            find_unused_parameters=find_unused_parameters, **kwargs)
     return module
 
 
 def params_count(net):
     n_parameters = sum(p.numel() for p in net.parameters())
+    # print("ggg")
+    #
+    # def convert_flops_unit(value, is_macs=True, strict_conversion=True):
+    #     """
+    #     将 MACs 转换为 FLOPs 并格式化单位
+    #
+    #     参数：
+    #         value: ptflops 输出的 MACs 数值（as_strings=False 时的原始数值，单位：MACs）
+    #         is_macs: 是否为 MACs 输入（固定为 True）
+    #         strict_conversion: 是否严格换算（1 MAC = 2 FLOPs），否则近似为 1:1
+    #     返回：
+    #         格式化的 FLOPs 字符串（如 "8.24 GFLOPs"）
+    #     """
+    #     # 第一步：MACs 转 FLOPs
+    #     if strict_conversion:
+    #         flops = value * 2  # 严格换算：1 MAC = 2 FLOPs
+    #     else:
+    #         flops = value  # 近似换算：1 MAC ≈ 1 FLOPs（论文常用）
+    #
+    #     # 第二步：转换为合适的单位（GFLOPs / MFLOPs / kFLOPs）
+    #     if flops >= 1e9:
+    #         return f"{flops / 1e9:.2f} GFLOPs"
+    #     elif flops >= 1e6:
+    #         return f"{flops / 1e6:.2f} MFLOPs"
+    #     elif flops >= 1e3:
+    #         return f"{flops / 1e3:.2f} kFLOPs"
+    #     else:
+    #         return f"{flops:.2f} FLOPs"
+    #
+    # def convert_params_unit(params):
+    #     """将参数数量转换为 M/B 单位"""
+    #     if params >= 1e9:
+    #         return f"{params / 1e9:.2f} B"
+    #     elif params >= 1e6:
+    #         return f"{params / 1e6:.2f} M"
+    #     elif params >= 1e3:
+    #         return f"{params / 1e3:.2f} K"
+    #     else:
+    #         return f"{params:.2f}"
+    #
+    # # 计算模型的 MACs 和参数（as_strings=False 便于数值处理）
+    # macs, params = get_model_complexity_info(
+    #     net,  # 你的模型
+    #     (2, 3, 448, 224),  # 输入形状（不含批量维度）
+    #     as_strings=False,  # 返回数值（而非带单位的字符串）
+    #     print_per_layer_stat=False,
+    #     verbose=False
+    # )
+    #
+    # # 转换为 FLOPs（选择论文中常用的换算方式）
+    # # 建议：论文中注明 "FLOPs 由 MACs 近似换算（1 MAC ≈ 1 FLOP）" 或 "严格换算（1 MAC = 2 FLOPs）"
+    # # flops_str = convert_flops_unit(macs, strict_conversion=False)  # 近似换算（常用）
+    # flops_str = convert_flops_unit(macs, strict_conversion=True)  # 严格换算（可选）
+    #
+    # # 转换参数单位
+    # params_str = convert_params_unit(params)
+    #
+    # # 输出结果（符合学术论文格式）
+    # print(f"FLOPs: {flops_str}")  # 例如：FLOPs: 4.12 GFLOPs
+    # print(f"Params: {params_str}")  # 例如：Params: 25.56 M
+    # print(f"Params2: {n_parameters / 1e6:.2f} M")
     return 'Parameters Count: {:.5f}M'.format(n_parameters / 1e6)

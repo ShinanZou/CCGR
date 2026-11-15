@@ -70,14 +70,20 @@ class TripletSamplerView(tordata.sampler.Sampler):
             pid_list = sync_random_sample_list(
                 self.dataset.label_set, self.batch_size[0])
 
+            if self.dataset.views_set2 == []:
+                view_id = sync_random_sample_list(
+                    self.dataset.views_set, 1)
+            elif all(item not in self.dataset.numbers_list_out for item in pid_list):
+                view_id = sync_random_sample_list(
+                    self.dataset.views_set, 1)
+            else:
+                view_id = sync_random_sample_list(
+                    self.dataset.views_set2, 1)
+
             for pid in pid_list:
-                indices = []
-                while len(indices) == 0:
-                    view_id = sync_random_sample_list(
-                        self.dataset.views_set, 1)
-                    _index = self.dataset.indices_dict.loc[pid, :, view_id].values
-                    _index = _index[_index > 0].flatten().tolist()
-                    indices = _index
+                _index = self.dataset.indices_dict.loc[pid, :, view_id].values
+                _index = _index[_index > 0].flatten().tolist()
+                indices = _index
 
                 indices = sync_random_sample_list(
                     indices, k=self.batch_size[1])

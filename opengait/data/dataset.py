@@ -14,6 +14,7 @@ class DataSet(tordata.Dataset):
                             a certain gait sequence presented as [label, type, view, paths];
         """
         self.__dataset_parser(data_cfg, training)
+        self.sampler_type = data_cfg["train_sampler_type"]
         self.data_in_use = data_cfg['data_in_use']
         self.dataset_name = data_cfg['dataset_name']
         self.cache = data_cfg['cache']
@@ -27,26 +28,36 @@ class DataSet(tordata.Dataset):
         self.views_set = sorted(list(set(self.views_list)))
         self.seqs_data = [None] * len(self)
 
-        self.indices_dict = {label: [] for label in self.label_set}
-        for i, seq_info in enumerate(self.seqs_info):
-            self.indices_dict[seq_info[0]].append(i)
+        if self.dataset_name == "CCGR" and self.sampler_type == "TripletSamplerView":
+            set1 = ['112_5_2.avi', '135_3.avi', '112_5_3.avi', '45_4.avi', '180_4.avi', '90_4.avi', '90_2.avi', 'over.avi', '135_4.avi', '0_4.avi', '135_1.avi', '135_2.avi', '112_5_1.avi']
+            self.views_set2 = sorted(list(set(self.views_set) - set(set1)))
+            self.numbers_list_out = list(range(395, 495))
+        else:
+            self.views_set2 = []
+        if self.sampler_type != "TripletSamplerView":
+            self.indices_dict = {label: [] for label in self.label_set}
+            for i, seq_info in enumerate(self.seqs_info):
+                self.indices_dict[seq_info[0]].append(i)
+        else:
+            _ = np.zeros((len(self.label_set),
+                          len(self.types_set),
+                          len(self.views_set))).astype('int')
+            _ -= 1
+            self.indices_dict = xr.DataArray(
+                _,
+                coords={'label': sorted(list(self.label_set)),
+                        'seq_type': sorted(list(self.types_set)),
+                        'view': sorted(list(self.views_set))},
+                dims=['label', 'seq_type', 'view'])
 
-        # _ = np.zeros((len(self.label_set),
-        #               len(self.types_set),
-        #               len(self.views_set))).astype('int')
-        # _ -= 1
-        # self.indices_dict = xr.DataArray(
-        #     _,
-        #     coords={'label': sorted(list(self.label_set)),
-        #             'seq_type': sorted(list(self.types_set)),
-        #             'view': sorted(list(self.views_set))},
-        #     dims=['label', 'seq_type', 'view'])
-        #
-        # for i, seq_info in enumerate(self.seqs_info):
-        #     _label = self.label_list[i]
-        #     _seq_type = self.types_list[i]
-        #     _view = self.views_list[i]
-        #     self.indices_dict.loc[_label, _seq_type, _view] = i
+            for i, seq_info in enumerate(self.seqs_info):
+                _label = self.label_list[i]
+                _seq_type = self.types_list[i]
+                _view = self.views_list[i]
+                self.indices_dict.loc[_label, _seq_type, _view] = i
+
+
+
 
         if self.cache:
             self.__load_all_data()
@@ -55,7 +66,7 @@ class DataSet(tordata.Dataset):
         return len(self.seqs_info)
 
     def __loader__(self, paths):
-        paths = sorted(paths)
+        # paths = sorted(paths)
         data_list = []
         for pth in paths:
             if pth.endswith('.pkl'):
@@ -63,11 +74,19 @@ class DataSet(tordata.Dataset):
                     _ = pickle.load(f)
                     if self.binary:
                         np.putmask(_, _ > 0, 255)
-                    if self.data_in_use == "pose":
+                    if "pose" in self.data_in_use and "pose" in pth:
+                        # print(pth)
                         _ = _[:,5:].reshape(-1,17,3)
+                        # print("read", _.shape)
                 f.close()
             else:
                 raise ValueError('- Loader - just support .pkl !!!')
+            # if "sil" in pth and "NM1" not in pth:
+            #     kkk = 130
+            # if "rgbs" in pth and "NM1" not in pth:
+            #     _ = _[0:kkk, :, :]
+            # if "ratios" in pth and "NM1" not in pth:
+            #     _ = _[0:kkk]
             data_list.append(_)
         for idx, data in enumerate(data_list):
             if len(data) != len(data_list[0]):
@@ -138,17 +157,36 @@ class DataSet(tordata.Dataset):
                         seq_path = osp.join(dataset_root, *seq_info)
                         seq_dirs = sorted(os.listdir(seq_path))
                         if seq_dirs != []:
-                            seq_dirs = [osp.join(seq_path, dir)
-                                        for dir in seq_dirs]
+                            if "without" in data_in_use:
+                                out_typ = data_in_use.split("-")[-1]
+                                seq_dirs = [osp.join(seq_path, dir)
+                                            for dir in seq_dirs if out_typ not in dir]
+                            else:
+                                seq_dirs = [osp.join(seq_path, dir)
+                                            for dir in seq_dirs]
                             if data_in_use is not None:
                                 if dataset_name == "CCGR":
                                     seq_dirs = [dir for dir in seq_dirs
-                                                if dir.split("/")[-1][0:-4].split("-")[0][len(seq_info[2])-4:] == data_in_use]
+                                                if dir.split("/")[-1][0:-4].split("-")[0][len(seq_info[2])-4:] in data_in_use]
                                 else:
                                     seq_dirs = [dir for dir in seq_dirs
-                                                if dir.split("/")[-1][0:-4].split("-")[-1] == data_in_use]
-                            if seq_dirs != []:
-                                seqs_info_list.append([*seq_info, seq_dirs])
+                                                if dir.split("/")[-1][0:-4].split("-")[-1] in data_in_use]
+
+                            if len(seq_dirs) == len(data_in_use.split(",")):
+                                if "," in data_in_use:
+                                    if dataset_name == "CCGR":
+                                        if seq_dirs[0].split("/")[-1][0:-4].split("-")[0][len(seq_info[2])-4:] == data_in_use.split(",")[0]:
+                                            pass
+                                        else:
+                                            seq_dirs.reverse()
+                                    else:
+                                        if seq_dirs[0].split("/")[-1][0:-4].split("-")[-1] == data_in_use.split(",")[0]:
+                                            pass
+                                        else:
+                                            seq_dirs.reverse()
+                                    seqs_info_list.append([*seq_info, seq_dirs])
+                                else:
+                                    seqs_info_list.append([*seq_info, seq_dirs])
                         else:
                             msg_mgr.log_debug(
                                 'Find no .pkl file in %s-%s-%s.' % (lab, typ, vie))

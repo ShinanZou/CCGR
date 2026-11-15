@@ -25,6 +25,24 @@ class BaseSilTransform():
         return x / self.divsor
 
 
+class BaseParsingCuttingTransform():
+    def __init__(self, divsor=255.0, cutting=None):
+        self.divsor = divsor
+        self.cutting = cutting
+
+    def __call__(self, x):
+        if self.cutting is not None:
+            cutting = self.cutting
+        else:
+            cutting = int(x.shape[-1] // 64) * 10
+        if cutting != 0:
+            x = x[..., cutting:-cutting]
+        if x.max() == 255 or x.max() == 255.:
+            return x / self.divsor
+        else:
+            return x / 1.0
+
+
 class BaseSilCuttingTransform():
     def __init__(self, divsor=255.0, cutting=None):
         self.divsor = divsor
@@ -35,32 +53,17 @@ class BaseSilCuttingTransform():
             cutting = self.cutting
         else:
             cutting = int(x.shape[-1] // 64) * 10
-        x = x[..., cutting:-cutting]
-        return x / self.divsor
-
-class BaseSilCuttingpatchTransform():
-    def __init__(self, divsor=255.0, cutting=None):
-        self.divsor = divsor
-        self.cutting = cutting
-
-    def __call__(self, x):
-        if self.cutting is not None:
-            cutting = self.cutting
-        else:
-            cutting = int(x.shape[-1] // 64) * 10
-        x = x[..., cutting:-cutting]
-        # x1 = x[0] #sil
-        # x2 = x[1]
-        # x3 = x[2]
+        if cutting != 0:
+            x = x[..., cutting:-cutting]
         return x / self.divsor
 
 
 class BaseRgbTransform():
     def __init__(self, mean=None, std=None):
         if mean is None:
-            mean = [0.485*255, 0.456*255, 0.406*255]
+            mean = [0.485 * 255, 0.456 * 255, 0.406 * 255]
         if std is None:
-            std = [0.229*255, 0.224*255, 0.225*255]
+            std = [0.229 * 255, 0.224 * 255, 0.225 * 255]
         self.mean = np.array(mean).reshape((1, 3, 1, 1))
         self.std = np.array(std).reshape((1, 3, 1, 1))
 
@@ -108,7 +111,7 @@ class RandomErasing(object):
                     if w < seq_size[2] and h < seq_size[1]:
                         x1 = random.randint(0, seq_size[1] - h)
                         y1 = random.randint(0, seq_size[2] - w)
-                        seq[:, x1:x1+h, y1:y1+w] = 0.
+                        seq[:, x1:x1 + h, y1:y1 + w] = 0.
                         return seq
             return seq
         else:
@@ -129,36 +132,21 @@ class RandomRotate(object):
         if random.uniform(0, 1) >= self.prob:
             return seq
         else:
-            _, dh, dw = seq.shape
+            dh, dw = seq.shape[-2:]
             # rotation
             degree = random.uniform(-self.degree, self.degree)
             M1 = cv2.getRotationMatrix2D((dh // 2, dw // 2), degree, 1)
             # affine
+            if len(seq.shape) == 4:
+                seq = seq.transpose(0, 2, 3, 1)
             seq = [cv2.warpAffine(_[0, ...], M1, (dw, dh))
                    for _ in np.split(seq, seq.shape[0], axis=0)]
             seq = np.concatenate([np.array(_)[np.newaxis, ...]
-                                 for _ in seq], 0)
+                                  for _ in seq], 0)
+            if len(seq.shape) == 4:
+                seq = seq.transpose(0, 3, 1, 2)
             return seq
 
-class RandomRotatec(object):
-    def __init__(self, prob=0.5, degree=10):
-        self.prob = prob
-        self.degree = degree
-
-    def __call__(self, seq):
-        if random.uniform(0, 1) >= self.prob:
-            return seq
-        else:
-            t, c, dh, dw = seq.shape
-            # rotation
-            degree = random.uniform(-self.degree, self.degree)
-            M1 = cv2.getRotationMatrix2D((dh // 2, dw // 2), degree, 1)
-            # affine
-            seq = np.transpose(seq, (0, 2, 3, 1))
-            seq = [cv2.warpAffine(_, M1, (dw, dh)) for _ in seq]
-            seq = np.stack(seq, axis=0)
-            seq = np.transpose(seq, (0, 3, 1, 2))
-            return seq
 
 class RandomPerspective(object):
     def __init__(self, prob=0.5):
@@ -168,7 +156,7 @@ class RandomPerspective(object):
         if random.uniform(0, 1) >= self.prob:
             return seq
         else:
-            _, h, w = seq.shape
+            h, w = seq.shape[-2:]
             cutting = int(w // 44) * 10
             x_left = list(range(0, cutting))
             x_right = list(range(w - cutting, w))
@@ -180,37 +168,16 @@ class RandomPerspective(object):
             canvasPoints = np.float32([[0, 0], [w, 0], [w, h], [0, h]])
             perspectiveMatrix = cv2.getPerspectiveTransform(
                 np.array(srcPoints), np.array(canvasPoints))
+            if len(seq.shape) == 4:
+                seq = seq.transpose(0, 2, 3, 1)
             seq = [cv2.warpPerspective(_[0, ...], perspectiveMatrix, (w, h))
                    for _ in np.split(seq, seq.shape[0], axis=0)]
             seq = np.concatenate([np.array(_)[np.newaxis, ...]
-                                 for _ in seq], 0)
+                                  for _ in seq], 0)
+            if len(seq.shape) == 4:
+                seq = seq.transpose(0, 3, 1, 2)
             return seq
 
-class RandomPerspectivec(object):
-    def __init__(self, prob=0.5):
-        self.prob = prob
-
-    def __call__(self, seq):
-        if random.uniform(0, 1) >= self.prob:
-            return seq
-        else:
-            t, c, h, w = seq.shape
-            cutting = int(w // 44) * 10
-            x_left = list(range(0, cutting))
-            x_right = list(range(w - cutting, w))
-            TL = (random.choice(x_left), 0)
-            TR = (random.choice(x_right), 0)
-            BL = (random.choice(x_left), h)
-            BR = (random.choice(x_right), h)
-            srcPoints = np.float32([TL, TR, BR, BL])
-            canvasPoints = np.float32([[0, 0], [w, 0], [w, h], [0, h]])
-            perspectiveMatrix = cv2.getPerspectiveTransform(
-                np.array(srcPoints), np.array(canvasPoints))
-            seq = np.transpose(seq, (0, 2, 3, 1))
-            seq = [cv2.warpPerspective(_, perspectiveMatrix, (w, h)) for _ in seq]
-            seq = np.stack(seq, axis=0)
-            seq = np.transpose(seq, (0, 3, 1, 2))
-            return seq
 
 class RandomAffine(object):
     def __init__(self, prob=0.5, degree=10):
@@ -221,22 +188,29 @@ class RandomAffine(object):
         if random.uniform(0, 1) >= self.prob:
             return seq
         else:
-            _, dh, dw = seq.shape
+            dh, dw = seq.shape[-2:]
             # rotation
             max_shift = int(dh // 64 * 10)
             shift_range = list(range(0, max_shift))
             pts1 = np.float32([[random.choice(shift_range), random.choice(shift_range)], [
-                              dh-random.choice(shift_range), random.choice(shift_range)], [random.choice(shift_range), dw-random.choice(shift_range)]])
+                dh - random.choice(shift_range), random.choice(shift_range)],
+                               [random.choice(shift_range), dw - random.choice(shift_range)]])
             pts2 = np.float32([[random.choice(shift_range), random.choice(shift_range)], [
-                              dh-random.choice(shift_range), random.choice(shift_range)], [random.choice(shift_range), dw-random.choice(shift_range)]])
+                dh - random.choice(shift_range), random.choice(shift_range)],
+                               [random.choice(shift_range), dw - random.choice(shift_range)]])
             M1 = cv2.getAffineTransform(pts1, pts2)
             # affine
+            if len(seq.shape) == 4:
+                seq = seq.transpose(0, 2, 3, 1)
             seq = [cv2.warpAffine(_[0, ...], M1, (dw, dh))
                    for _ in np.split(seq, seq.shape[0], axis=0)]
             seq = np.concatenate([np.array(_)[np.newaxis, ...]
-                                 for _ in seq], 0)
+                                  for _ in seq], 0)
+            if len(seq.shape) == 4:
+                seq = seq.transpose(0, 3, 1, 2)
             return seq
-        
+
+
 # ******************************************
 
 def Compose(trf_cfg):
@@ -256,6 +230,117 @@ def get_transform(trf_cfg=None):
         transform = [get_transform(cfg) for cfg in trf_cfg]
         return transform
     raise "Error type for -Transform-Cfg-"
+
+
+# **************** For GaitSSB ****************
+# Fan, et al: Learning Gait Representation from Massive Unlabelled Walking Videos: A Benchmark, T-PAMI2023
+
+class RandomPartDilate():
+    def __init__(self, prob=0.5, top_range=(12, 16), bot_range=(36, 40)):
+        self.prob = prob
+        self.top_range = top_range
+        self.bot_range = bot_range
+        self.modes_and_kernels = {
+            'RECT': [[5, 3], [5, 5], [3, 5]],
+            'CROSS': [[3, 3], [3, 5], [5, 3]],
+            'ELLIPSE': [[3, 3], [3, 5], [5, 3]]}
+        self.modes = list(self.modes_and_kernels.keys())
+
+    def __call__(self, seq):
+        '''
+            Using the image dialte and affine transformation to simulate the clorhing change cases.
+        Input:
+            seq: a sequence of silhouette frames, [s, h, w]
+        Output:
+            seq: a sequence of agumented frames, [s, h, w]
+        '''
+        if random.uniform(0, 1) >= self.prob:
+            return seq
+        else:
+            mode = random.choice(self.modes)
+            kernel_size = random.choice(self.modes_and_kernels[mode])
+            top = random.randint(self.top_range[0], self.top_range[1])
+            bot = random.randint(self.bot_range[0], self.bot_range[1])
+
+            seq = seq.transpose(1, 2, 0)  # [s, h, w] -> [h, w, s]
+            _seq_ = seq.copy()
+            _seq_ = _seq_[top:bot, ...]
+            _seq_ = self.dilate(_seq_, kernel_size=kernel_size, mode=mode)
+            seq[top:bot, ...] = _seq_
+            seq = seq.transpose(2, 0, 1)  # [h, w, s] -> [s, h, w]
+            return seq
+
+    def dilate(self, img, kernel_size=[3, 3], mode='RECT'):
+        '''
+            MORPH_RECT, MORPH_CROSS, ELLIPSE
+        Input:
+            img: [h, w]
+        Output:
+            img: [h, w]
+        '''
+        assert mode in ['RECT', 'CROSS', 'ELLIPSE']
+        kernel = cv2.getStructuringElement(getattr(cv2, 'MORPH_' + mode), kernel_size)
+        dst = cv2.dilate(img, kernel)
+        return dst
+
+
+class RandomPartBlur():
+    def __init__(self, prob=0.5, top_range=(9, 20), bot_range=(29, 40), per_frame=False):
+        self.prob = prob
+        self.top_range = top_range
+        self.bot_range = bot_range
+        self.per_frame = per_frame
+
+    def __call__(self, seq):
+        '''
+        Input:
+            seq: a sequence of silhouette frames, [s, h, w]
+        Output:
+            seq: a sequence of agumented frames, [s, h, w]
+        '''
+        if not self.per_frame:
+            if random.uniform(0, 1) >= self.prob:
+                return seq
+            else:
+                top = random.randint(self.top_range[0], self.top_range[1])
+                bot = random.randint(self.bot_range[0], self.bot_range[1])
+
+                seq = seq.transpose(1, 2, 0)  # [s, h, w] -> [h, w, s]
+                _seq_ = seq.copy()
+                _seq_ = _seq_[top:bot, ...]
+                _seq_ = cv2.GaussianBlur(_seq_, ksize=(3, 3), sigmaX=0)
+                _seq_ = (_seq_ > 0.2).astype(np.float)
+                seq[top:bot, ...] = _seq_
+                seq = seq.transpose(2, 0, 1)  # [h, w, s] -> [s, h, w]
+
+            return seq
+        else:
+            self.per_frame = False
+            frame_num = seq.shape[0]
+            ret = [self.__call__(seq[k][np.newaxis, ...]) for k in range(frame_num)]
+            self.per_frame = True
+            return np.concatenate(ret, 0)
+
+
+def DA4GaitSSB(
+        cutting=None,
+        ra_prob=0.2,
+        rp_prob=0.2,
+        rhf_prob=0.5,
+        rpd_prob=0.2,
+        rpb_prob=0.2,
+        top_range=(9, 20),
+        bot_range=(39, 50),
+):
+    transform = T.Compose([
+        RandomAffine(prob=ra_prob),
+        RandomPerspective(prob=rp_prob),
+        BaseSilCuttingTransform(cutting=cutting),
+        RandomHorizontalFlip(prob=rhf_prob),
+        RandomPartDilate(prob=rpd_prob, top_range=top_range, bot_range=bot_range),
+        RandomPartBlur(prob=rpb_prob, top_range=top_range, bot_range=bot_range),
+    ])
+    return transform
 
 
 # **************** For pose-based methods ****************
@@ -504,6 +589,202 @@ class SkeletonInput(object):
         return data[..., np.newaxis]
 
 
+class gpgait_HOD_MultiInput(object):
+    '''
+    Human-oriented descripter of GPGait
+    Paper: https://arxiv.org/abs/2303.05234
+    '''
+
+    def __init__(self, joint_format='coco'):
+        if joint_format == 'coco':
+            self.connect_joint = np.array([5, 0, 0, 1, 2, 0, 0, 5, 6, 7, 8, 5, 6, 11, 12, 13, 14])
+            self.angle_list = [
+                np.array([0, 1, 2]),
+                np.array([1, 0, 3]),
+                np.array([2, 4, 0]),
+                np.array([3, 1]),
+                np.array([4, 2]),
+                np.array([5, 7, 11]),
+                np.array([6, 8, 12]),
+                np.array([7, 5, 9]),
+                np.array([8, 10, 6]),
+                np.array([9, 7]),
+                np.array([10, 8]),
+                np.array([11, 5, 13]),
+                np.array([12, 6, 14]),
+                np.array([13, 11, 15]),
+                np.array([14, 12, 16]),
+                np.array([15, 13]),
+                np.array([16, 14])
+            ]
+        elif joint_format == 'alphapose' or joint_format == 'openpose':
+            self.connect_joint = np.array([1, 1, 1, 2, 3, 1, 5, 6, 2, 8, 9, 5, 11, 12, 0, 0, 14, 15])
+            self.angle_list = [
+                np.array([0, 15, 14]),
+                np.array([15, 0, 17]),
+                np.array([14, 16, 0]),
+                np.array([17, 15]),
+                np.array([16, 14]),
+                np.array([5, 6, 11]),
+                np.array([2, 3, 8]),
+                np.array([6, 3, 8]),
+                np.array([3, 4, 2]),
+                np.array([7, 6]),
+                np.array([4, 3]),
+                np.array([11, 5, 12]),
+                np.array([8, 2, 9]),
+                np.array([12, 11, 13]),
+                np.array([9, 8, 10]),
+                np.array([13, 12]),
+                np.array([10, 9])
+            ]
+
+    def cal_edge_angle(self, center, left):
+        # generate center/left/right
+        right = np.zeros_like(center)
+        right[0, :] = center[0, :]
+        right[1, :] = left[1, :]
+        return self.cos_law(center, left, right)
+
+    def cal_inner_angle(self, center, left, right):
+        return self.cos_law(center, left, right)
+
+    def cos_law(self, center, left, right):
+        # adjacent_side_1
+        side1 = np.sqrt(np.power(center[0, :] - left[0, :], 2) + np.power(center[1, :] - left[1, :], 2))
+        # adjacent_side_2
+        side2 = np.sqrt(np.power(center[0, :] - right[0, :], 2) + np.power(center[1, :] - right[1, :], 2))
+        # opposite_side
+        side3 = np.sqrt(np.power(left[0, :] - right[0, :], 2) + np.power(left[1, :] - right[1, :], 2))
+        # cosine_law
+        deno = side1 * side2
+        where_zero = np.where(deno == 0)
+        deno[where_zero] = 1
+        cos = (side1 * side1 + side2 * side2 - side3 * side3) / (2 * deno)
+        where_mo_one = np.where(cos > 1)
+        where_le_one = np.where(cos < -1)
+        cos[where_mo_one] = 1
+        cos[where_le_one] = -1
+        data_return = math.pi - np.arccos(cos)
+        data_return[where_zero] = math.pi
+        return data_return
+
+    def __call__(self, data):
+        data = np.transpose(data, (2, 0, 1))
+        data = data[:2, :, :]
+
+        C, T, V = data.shape
+        data_new = np.zeros((3, C, T, V))
+        # Joints
+        data_new[0, :C, :, :] = data
+        # Bones
+        for i in range(len(self.connect_joint)):
+            data_new[1, :, :, i] = data[:, :, i] - data[:, :, self.connect_joint[i]]
+        # Angles
+        for i in range(len(self.angle_list)):
+            if len(self.angle_list[i]) == 3:
+                data_new[2, :1, :, i] = self.cal_inner_angle(data[:, :, self.angle_list[i][0]],
+                                                             data[:, :, self.angle_list[i][1]],
+                                                             data[:, :, self.angle_list[i][2]])
+            else:
+                data_new[2, :1, :, i] = self.cal_edge_angle(data[:, :, self.angle_list[i][0]],
+                                                            data[:, :, self.angle_list[i][1]])
+
+        data_new = np.nan_to_num(data_new)
+
+        I, C, T, V = data_new.shape
+        data_new = data_new.reshape(I * C, T, V)
+        # (C T V) -> (T V C)
+        data_new = np.transpose(data_new, (1, 2, 0))
+
+        return data_new
+
+
+class gpgait_Affine(object):
+    '''
+    Make the spine of skeleton vertical to the ground
+    Detailed description in paper: https://arxiv.org/abs/2303.05234
+
+    The formula for counterclockwise rotation around a point (x0, y0):
+    xx = x * cos - y * sin + x0 * (1-cos) + y0 * sin
+    yy = x * sin + y * cos + y0 * (1-cos) - x0 * sin
+    '''
+
+    def __init__(self, fi=0):
+        self.fi = fi
+
+    def __call__(self, data):
+        kp = data
+        kp_x = kp[..., 0]
+        kp_y = kp[..., 1]
+        neck_x = (kp_x[:, 5] + kp_x[:, 6]) / 2
+        neck_y = (kp_y[:, 5] + kp_y[:, 6]) / 2
+        hip_x = (kp_x[:, 11] + kp_x[:, 12]) / 2
+        hip_y = (kp_y[:, 11] + kp_y[:, 12]) / 2
+
+        x_l = hip_x - neck_x
+        y_l = hip_y - neck_y
+        where_zero = np.where(y_l == 0)
+        y_l[where_zero] = 1
+        theta = np.arctan(x_l / y_l)
+        theta[where_zero] = 0.
+        theta = np.expand_dims(theta, axis=-1)
+        neck_x = np.expand_dims(neck_x, axis=-1)
+        neck_y = np.expand_dims(neck_y, axis=-1)
+        # if theta > self.fi:
+        kp[..., 0] = np.cos(theta) * kp[..., 0] - np.sin(theta) * kp[..., 1] + (1 - np.cos(theta)) * neck_x + np.sin(
+            theta) * neck_y
+        kp[..., 1] = np.sin(theta) * kp[..., 0] + np.cos(theta) * kp[..., 1] + (1 - np.cos(theta)) * neck_y - np.sin(
+            theta) * neck_x
+        data = kp
+        return data
+
+
+class gpgait_RescaleCenter(object):
+    '''
+    Normalize and align the skeletons
+    Detailed description in paper: https://arxiv.org/abs/2303.05234
+    '''
+
+    def __init__(self, center='neck', scale=225):
+        self.center = center
+        self.scale = scale
+
+    def __call__(self, data):
+
+        kp = data  # [T,17,3]
+
+        if self.center == 'None' or self.center == None:
+            return kp
+
+        # Rescale
+        kp_x = kp[..., 0]
+        kp_y = kp[..., 1]
+        min_y = np.min(kp_y, axis=1).reshape(-1, 1)
+        max_y = np.max(kp_y, axis=1).reshape(-1, 1)
+        old_h = max_y - min_y
+        new_h = self.scale
+        projection = new_h / old_h
+        kp_x *= projection
+        kp_y *= projection
+
+        # Center
+        if self.center == 'neck':
+            offset_x = (kp_x[:, 5] + kp_x[:, 6]) / 2
+            offset_y = (kp_y[:, 5] + kp_y[:, 6]) / 2
+        elif self.center == 'head':
+            offset_x = (kp_x[:, 1] + kp_x[:, 2]) / 2
+            offset_y = (kp_y[:, 1] + kp_y[:, 2]) / 2
+        elif self.center == 'hip':
+            offset_x = (kp_x[:, 11] + kp_x[:, 12]) / 2
+            offset_y = (kp_y[:, 11] + kp_y[:, 12]) / 2
+        # offset
+        kp_x -= offset_x.reshape(-1, 1)
+        kp_y -= offset_y.reshape(-1, 1)
+        data = kp
+        return data
+
+
 class TwoView(object):
     def __init__(self, trf_cfg):
         assert is_list(trf_cfg)
@@ -525,4 +806,3 @@ class MSGGTransform():
     def __call__(self, x):
         result = x[..., self.mask, :].copy()
         return result
-

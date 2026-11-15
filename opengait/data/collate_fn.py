@@ -11,6 +11,9 @@ class CollateFn(object):
         sample_type = sample_type.split('_')
         self.sampler = sample_type[0]
         self.ordered = sample_type[1]
+        self.view_label_flag = sample_config['view_label']
+        if self.view_label_flag:
+            self.dataset_name = sample_config['dataset_name']
         if self.sampler not in ['fixed', 'unfixed', 'all']:
             raise ValueError
         if self.ordered not in ['ordered', 'unordered']:
@@ -43,7 +46,13 @@ class CollateFn(object):
             seqs_batch.append(bt[0])
             labs_batch.append(self.label_set.index(bt[1][0]))
             typs_batch.append(bt[1][1])
-            vies_batch.append(bt[1][2])
+            if self.view_label_flag and self.dataset_name == "CCGR-3D":
+                mapping = {"0_75.avi": 0, "90_0.avi": 1, "120_25.avi": 2, "150_60.avi": 3, "270_40.avi": 4,
+                           "0_75": 0, "90_0": 1, "120_25": 2, "150_60": 3, "270_40": 4}
+
+                vies_batch.append(mapping[bt[1][2]])
+            else:
+                vies_batch.append(bt[1][2])
 
         global count
         count = 0

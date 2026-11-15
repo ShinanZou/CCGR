@@ -9,6 +9,8 @@ from utils import config_loader, get_ddp_module, init_seeds, params_count, get_m
 parser = argparse.ArgumentParser(description='Main program for opengait.')
 parser.add_argument('--local_rank', type=int, default=0,
                     help="passed by torch.distributed.launch module")
+parser.add_argument('--local-rank', type=int, default=0,
+                    help="passed by torch.distributed.launch module, for pytorch >=2.0")
 parser.add_argument('--cfgs', type=str,
                     default='config/default.yaml', help="path of config file")
 parser.add_argument('--phase', default='train',
@@ -46,7 +48,7 @@ def run_model(cfgs, training):
         model = nn.SyncBatchNorm.convert_sync_batchnorm(model)
     if cfgs['trainer_cfg']['fix_BN']:
         model.fix_BN()
-    model = get_ddp_module(model)
+    model = get_ddp_module(model, cfgs['trainer_cfg']['find_unused_parameters'])
     msg_mgr.log_info(params_count(model))
     msg_mgr.log_info("Model Initialization Finished!")
 

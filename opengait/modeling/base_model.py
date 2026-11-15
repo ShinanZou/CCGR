@@ -22,7 +22,7 @@ from torch.cuda.amp import autocast
 from torch.cuda.amp import GradScaler
 from abc import ABCMeta
 from abc import abstractmethod
-
+import time
 from . import backbones
 from .loss_aggregator import LossAggregator
 from data.transform import get_transform
@@ -34,6 +34,7 @@ from utils import get_valid_args, is_list, is_dict, np2var, ts2np, list2var, get
 from evaluation import evaluator as eval_functions
 from utils import NoOp
 from utils import get_msg_mgr
+from .models.GPGait_utils.components.blocks import ResGCN_Module
 
 __all__ = ['BaseModel']
 
@@ -144,8 +145,11 @@ class BaseModel(MetaModel, nn.Module):
                                   cfgs['model_cfg']['model'], self.engine_cfg['save_name'])
         self.save_path1 = osp.join('output/', cfgs['data_cfg']['test_dataset_name'],
                                   cfgs['model_cfg']['model'], self.engine_cfg['save_name'])
+
         self.build_network(cfgs['model_cfg'])
         self.init_parameters()
+        self.zero_init_lastBN()
+        self.trainer_trfs = get_transform(cfgs['trainer_cfg']['transform'])
 
         self.msg_mgr.log_info(cfgs['data_cfg'])
         if training:
@@ -154,6 +158,8 @@ class BaseModel(MetaModel, nn.Module):
         if not training or self.engine_cfg['with_test']:
             self.test_loader = self.get_loader(
                 cfgs['data_cfg'], train=False)
+            self.evaluator_trfs = get_transform(
+                cfgs['evaluator_cfg']['transform'])
 
         self.device = torch.distributed.get_rank()
         torch.cuda.set_device(self.device)
@@ -200,6 +206,13 @@ class BaseModel(MetaModel, nn.Module):
                 if m.affine:
                     nn.init.normal_(m.weight.data, 1.0, 0.02)
                     nn.init.constant_(m.bias.data, 0.0)
+    def zero_init_lastBN(self):
+        for m in self.modules():
+            if isinstance(m, ResGCN_Module):
+                if hasattr(m.scn, 'bn_up'):
+                    nn.init.constant_(m.scn.bn_up.weight, 0)
+                if hasattr(m.tcn, 'bn_up'):
+                    nn.init.constant_(m.tcn.bn_up.weight, 0)
 
     def get_loader(self, data_cfg, train=True):
         sampler_cfg = self.cfgs['trainer_cfg']['sampler'] if train else self.cfgs['evaluator_cfg']['sampler']
@@ -301,18 +314,19 @@ class BaseModel(MetaModel, nn.Module):
             tuple: training data including inputs, labels, and some meta data.
         """
         seqs_batch, labs_batch, typs_batch, vies_batch, seqL_batch = inputs
-        trf_cfgs = self.engine_cfg['transform']
-        seq_trfs = get_transform(trf_cfgs)
+        seq_trfs = self.trainer_trfs if self.training else self.evaluator_trfs
         if len(seqs_batch) != len(seq_trfs):
             raise ValueError(
                 "The number of types of input data and transform should be same. But got {} and {}".format(len(seqs_batch), len(seq_trfs)))
         requires_grad = bool(self.training)
         seqs = [np2var(np.asarray([trf(fra) for fra in seq]), requires_grad=requires_grad).float()
                 for trf, seq in zip(seq_trfs, seqs_batch)]
-
         typs = typs_batch
-        vies = vies_batch
-        
+        if self.engine_cfg['sampler']['view_label']:
+            vies = list2var(vies_batch).long()
+        else:
+            vies = vies_batch
+
         labs = list2var(labs_batch).long()
 
         if seqL_batch is not None:
@@ -438,10 +452,17 @@ class BaseModel(MetaModel, nn.Module):
     @ staticmethod
     def run_test(model):
         """Accept the instance object(model) here, and then run the test loop."""
-
+        evaluator_cfg = model.cfgs['evaluator_cfg']
+        if torch.distributed.get_world_size() != evaluator_cfg['sampler']['batch_size']:
+            raise ValueError("The batch size ({}) must be equal to the number of GPUs ({}) in testing mode!".format(
+                evaluator_cfg['sampler']['batch_size'], torch.distributed.get_world_size()))
         rank = torch.distributed.get_rank()
         with torch.no_grad():
+            start_time = time.time()
             info_dict = model.inference(rank)
+            end_time = time.time()
+            elapsed_time = (end_time - start_time) * 1000
+            print(f"inference times: {elapsed_time:.2f} ms")
         if rank == 0:
             loader = model.test_loader
             label_list = loader.dataset.label_list
@@ -451,13 +472,13 @@ class BaseModel(MetaModel, nn.Module):
             info_dict.update({
                 'labels': label_list, 'types': types_list, 'views': views_list})
 
-            if 'eval_func' in model.cfgs["evaluator_cfg"].keys():
-                eval_func = model.cfgs['evaluator_cfg']["eval_func"]
+            if 'eval_func' in evaluator_cfg.keys():
+                eval_func = evaluator_cfg["eval_func"]
             else:
                 eval_func = 'identification'
             eval_func = getattr(eval_functions, eval_func)
             valid_args = get_valid_args(
-                eval_func, model.cfgs["evaluator_cfg"], ['metric'])
+                eval_func, evaluator_cfg, ['metric'])
             try:
                 dataset_name = model.cfgs['data_cfg']['test_dataset_name']
             except:
@@ -474,3 +495,4 @@ class BaseModel(MetaModel, nn.Module):
                 np.save(osp.join(model.save_path1, "{}.npy".format(4)), view)
             else:
                 return eval_func(info_dict, dataset_name, **valid_args)
+

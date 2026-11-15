@@ -599,7 +599,7 @@ class SpatialBottleneckBlock(nn.Module):
 
 class SpatialAttention(nn.Module):
     """
-    This class implements Spatial Transformer.
+    This class implements Spatial Transformer. 
     Function adapted from: https://github.com/leaderj1001/Attention-Augmented-Conv2d
     """
     def __init__(self, in_channels, out_channel, A, num_point, dk_factor=0.25, kernel_size=1, Nh=8, num=4, stride=1):
@@ -706,6 +706,7 @@ class ParallelBN1d(nn.Module):
         x = self.bn1d(x)
         x = rearrange(x, 'n (c p) -> n c p', p=self.parts_num)
         return x
+    
 
 def conv3x3(in_planes, out_planes, stride=1, groups=1, dilation=1):
     """3x3 convolution with padding"""

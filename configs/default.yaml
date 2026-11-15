@@ -8,6 +8,7 @@ data_cfg:
   binary: false
   data_in_use: sil
   test_dataset_name: CASIA-B
+  train_sampler_type: TripletSampler
 
 evaluator_cfg:
   enable_float16: false
@@ -19,6 +20,7 @@ evaluator_cfg:
     batch_size: 4
     sample_type: all_ordered
     type: InferenceSampler
+    view_label: false
   transform:
       - type: BaseSilCuttingTransform
   metric: euc # cos
@@ -48,6 +50,7 @@ scheduler_cfg:
   scheduler: MultiStepLR
 
 trainer_cfg:
+  find_unused_parameters: false
   enable_float16: true
   with_test: false
   fix_BN: false

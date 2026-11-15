@@ -1,0 +1,96 @@
+data_cfg:
+  dataset_name: CCGR-3D
+  dataset_root: /7T/zsndata3/CCGR_3D/2D
+  dataset_partition: ./datasets/CCGR-3D/CCGR-3D.json
+  test_dataset_name: CCGR-3D
+  num_workers: 1
+  data_in_use: pose
+  remove_no_gallery: false
+
+evaluator_cfg:
+  enable_float16: false
+  restore_ckpt_strict: true
+  restore_hint: 50000
+  save_name: gpgait_CCGR_3D
+  sampler:
+    batch_size: 4 # should be same as num_gpus
+    sample_type: all_ordered
+    type: InferenceSampler
+  metric: euc # cos
+  eval_func: evaluate_CCGR_3D
+  transform:
+    - type: Compose
+      trf_cfg:
+        - type: gpgait_RescaleCenter
+        - type: gpgait_HOD_MultiInput
+        - type: SkeletonInput
+
+loss_cfg:
+  - loss_term_weight: 1.0
+    margin: 0.3
+    type: GPGait_TripletLoss
+    log_prefix: triplet
+    is_hard_loss: true
+  - loss_term_weight: 1.0
+    scale: 16
+    type: GPGait_CrossEntropyLoss
+    log_prefix: softmax
+    log_accuracy: true
+    label_smooth: false
+
+model_cfg:
+  model: gpgait
+  in_channels:
+    - 2 
+    - 64
+    - 64
+    - 128
+    - 256
+  num_class: 115
+  share_num: 3
+
+
+optimizer_cfg:
+  lr: 0.001
+  momentum: 0.9
+  solver: Adam
+  weight_decay: 0.00002
+
+scheduler_cfg:
+  three_phase: True
+  max_lr: 0.002
+  div_factor: 100
+  total_steps: 50000
+  pct_start: 0.5
+  scheduler: OneCycleLR
+
+trainer_cfg:
+  enable_float16: false #not use
+  log_iter: 100
+  with_test: false
+  restore_ckpt_strict: false
+  restore_hint: 0
+  save_iter: 10000
+  save_name: gpgait_CCGR_3D
+  sync_BN: true
+  total_iter: 50000
+  sampler:
+    batch_shuffle: false
+    batch_size:
+      - 8
+      - 8
+    frames_num_fixed: 60
+    frames_num_max: 50
+    frames_num_min: 25
+    sample_type: fixed_unordered #Repeat sample
+    frames_skip_num: 0
+    type: TripletSampler
+  transform:
+    - type: Compose
+      trf_cfg:
+        - type: gpgait_RescaleCenter
+          center: 'neck'
+          scale: 225
+        - type: gpgait_HOD_MultiInput
+          joint_format: coco
+        - type: SkeletonInput

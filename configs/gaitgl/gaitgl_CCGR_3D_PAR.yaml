@@ -1,0 +1,69 @@
+data_cfg:
+  dataset_name: CCGR-3D
+  dataset_root: /7T/zsndata3/CCGR_3D/2D
+  dataset_partition: ./datasets/CCGR-3D/CCGR-3D.json
+  num_workers: 1
+  data_in_use: par
+  remove_no_gallery: false # Remove probe if no gallery for it
+  test_dataset_name: CCGR-3D
+
+evaluator_cfg:
+  enable_float16: false
+  restore_ckpt_strict: true
+  restore_hint: 50000
+  save_name: GaitGL_PAR
+  eval_func: evaluate_CCGR_3D
+  sampler:
+    batch_size: 1
+    sample_type: all_ordered
+    type: InferenceSampler
+
+loss_cfg:
+  - loss_term_weight: 1.0
+    margin: 0.2
+    type: TripletLoss
+    log_prefix: triplet
+  - loss_term_weight: 1.0
+    scale: 1
+    type: CrossEntropyLoss
+    log_accuracy: true
+    label_smooth: true
+    log_prefix: softmax
+
+model_cfg:
+  model: GaitGL
+  channels: [32, 64, 128, 256]
+  class_num: 115
+
+optimizer_cfg:
+  lr: 1.0e-4
+  solver: Adam
+  weight_decay: 5.0e-4
+
+scheduler_cfg:
+  gamma: 0.1
+  milestones:
+    - 20000
+    - 30000
+    - 40000
+  scheduler: MultiStepLR
+
+trainer_cfg:
+  enable_float16: true
+  with_test: false
+  log_iter: 100
+  restore_ckpt_strict: true
+  restore_hint: 0
+  save_iter: 10000
+  save_name: GaitGL_PAR
+  sync_BN: true
+  total_iter: 50000
+  sampler:
+    batch_shuffle: true
+    batch_size:
+      - 8
+      - 8
+    frames_num_fixed: 30
+    frames_skip_num: 0
+    sample_type: fixed_ordered
+    type: TripletSampler
